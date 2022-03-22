@@ -47,7 +47,7 @@ client.on('ready', async () => {
     for (let i = 0; i < allDate.length; i++) {
         if (allDate[i].getMonth() === presentDate.getMonth() && allDate[i].getDate() === presentDate.getDate()) {
             // const text = `Hey ${data[i].name}`;
-            const text = randGreet + " @" + data[i].phoneNo;
+            const text = randGreet + " " + data[i].name;
 
             const chatId = data[i].phoneNo.substring(1) + "@c.us";
             // const id = "120363021716438327@g.us" //{abcd}
