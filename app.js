@@ -36,8 +36,7 @@ client.on('ready', async () => {
         "hope you got the money", "party when ?", "happy bday"];
 
     var randGreet = greetings[Math.floor(Math.random() * greetings.length)];
-    // await userModel.create({ name: "samikk", phoneNo: "+91........." })
-    // const { phoneNo, name, date } = await userModel.findOne({ name: "XYZ" })
+
 
     let presentDate = new Date();
     const data = await userModel.find()
@@ -49,9 +48,8 @@ client.on('ready', async () => {
             // const text = `Hey ${data[i].name}`;
             const text = randGreet + " " + data[i].name;
 
-            const chatId = data[i].phoneNo.substring(1) + "@c.us";
-            // const id = "120363021716438327@g.us" //{abcd}
-            const id = "120363041323908346@g.us" //{acm whatsapp bot}
+            // const chatId = data[i].phoneNo.substring(1) + "@c.us";
+            const id = process.env.acmWhatsappBotGroupId
 
 
             // const group = await client.getCommonGroups(id)
@@ -61,11 +59,7 @@ client.on('ready', async () => {
             // console.log(chat)
         }
     }
-    // const number = '+919324067124'
-    // const chatId = number.substring(1) + "@g.us"
-    // const chatId = "abcd@d.us"
-    // const chatId = '918920321607-919810900338@g.us'
-    // client.sendMessage(chatId, "HELLOOOO ");
+
 
 });
 // });
