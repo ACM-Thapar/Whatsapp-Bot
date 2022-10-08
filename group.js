@@ -1,42 +1,31 @@
-const qrcode = require("qrcode-terminal");
-const userModel = require("./models/userModel");
-const connect = require("./dbConnection/connect");
-var cron = require("node-cron");
+import client from "./whatsapp/Client.js";
 
-const { Client, LocalAuth, GroupChat } = require("whatsapp-web.js");
+import qrcode from "qrcode-terminal";
+import express from "express";
+import "dotenv/config";
 
-require("dotenv").config();
+import { router as group } from "./routes/group.js";
+import { createGroup } from "./controllers/group.js";
+const app = express();
+app.use(express.json());
+app.get("/whatsapp-login", (req, res) => {
+  client.on("qr", async (qr) => {
+    qrcode.generate(qr, { small: true });
+    console.log(qr);
 
-const client = new Client();
-//   authStrategy: new LocalAuth(),
-
-client.on("qr", async (qr) => {
-  qrcode.generate(qr, { small: true });
-  console.log("db Connected");
+    return res.json(qr);
+  });
+});
+app.get("/", (_, res) => {
+  res.json("Server is running.....");
 });
 
 client.on("ready", async () => {
   console.log("Client is ready!");
-
-  const groupChatName = ""; //Group name
-  const groupChatParticipants = []; //array of phone NUmbers
-
-  groupChatParticipants.forEach((number, i) => {
-    if (number.length === 10) {
-      number = "91" + number + "@c.us";
-      groupChatParticipants[i] = number;
-    } else if (number.startsWith("+")) {
-      number = number.split("+")[1];
-    } else {
-      number = number + "@c.us";
-    }
-  });
-
-  const groupChat = await client.createGroup(
-    groupChatName,
-    groupChatParticipants
-  );
-  console.log(groupChat);
+  app.use("/group", group);
 });
-
 client.initialize();
+
+app.listen(5001, () => {
+  console.log(`Server started on port `);
+});
